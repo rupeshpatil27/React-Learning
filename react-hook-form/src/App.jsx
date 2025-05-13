@@ -6,7 +6,7 @@ function App() {
 
   const [Val, setVal] = useState("")
 
-  const { register, handleSubmit, getValues, formState: { errors } } = useForm({
+  const { register, handleSubmit, getValues,setValue, formState: { errors } } = useForm({
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -15,6 +15,8 @@ function App() {
 
   const onSubmit = (data) => {
     const { firstName } = data;
+
+    setValue("firstName", "update value using setValue()")
 
     setVal(JSON.stringify(data))
   }
