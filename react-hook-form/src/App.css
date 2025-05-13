@@ -1,24 +1,31 @@
-.main-container{
-    /* height: 100%; */
-    padding: 5rem;
-    margin: 5rem;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    background-color: #fff;
+.main-container {
+  /* height: 100%; */
+  padding: 5rem;
+  margin: 5rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #fff;
 }
 
-.input{
-     background-color: #f6f6f6;
-     margin-top: 10px;
-     padding: 10px;
-     font-size: 15px;
+.input {
+  background-color: #f6f6f6;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 15px;
 }
 
-.input-btn{
-     background-color: #406de7;
-     margin-top: 10px;
-     padding: 10px;
-     font-size: 15px;
-     color: #fff;
+.input-btn {
+  background-color: #406de7;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 15px;
+  color: #fff;
+}
+
+.error-message {
+  color: #df2727;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 15px;
 }
