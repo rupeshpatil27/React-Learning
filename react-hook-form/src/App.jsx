@@ -4,7 +4,7 @@ import { useState } from "react";
 
 function App() {
 
-  let text = "";
+  const [Val, setVal] = useState("")
 
   const { register, handleSubmit, getValues, formState: { errors } } = useForm({
     defaultValues: {
@@ -14,7 +14,9 @@ function App() {
   })
 
   const onSubmit = (data) => {
-    console.log(data)
+    const { firstName } = data;
+
+    setVal(JSON.stringify(data))
   }
 
   return (
@@ -30,13 +32,17 @@ function App() {
           <span role="alert" className="error-message">Max length exceeded</span>
         )}
 
-        <input {...register("lastName",{ required: true})} placeholder="Enter Mobile" className="input" /><br />
+        <input {...register("lastName", { required: true })} placeholder="Enter Mobile" className="input" /><br />
 
-         {errors.lastName && errors.lastName.type === "required" && (
+        {errors.lastName && errors.lastName.type === "required" && (
           <span role="alert" className="error-message">This is required</span>
         )}
 
         <input type="submit" value="Submit" className="input-btn" /><br />
+
+        {Val &&
+          <span className="output-txt">{Val}</span>}
+
       </form>
     </>
   )

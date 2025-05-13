@@ -29,3 +29,11 @@
   padding: 10px;
   font-size: 15px;
 }
+
+.output-txt {
+  color: #000000;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 15px;
+  text-align: center;
+}
