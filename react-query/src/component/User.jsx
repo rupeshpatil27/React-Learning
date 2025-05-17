@@ -1,13 +1,13 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchData } from "../api/user";
+import { fetchData } from "../api/user"
 
 const User = () => {
   const {
     data: userData,
     isLoading,
     isError,
-  } = useQuery({ queryKey: ["users"], queryFn: fetchData(), enabled: true });
+  } = useQuery({ queryKey: ["users"], queryFn: fetchData, enabled: true });
   return (
     <div>
       {isLoading && "Loading...."}
