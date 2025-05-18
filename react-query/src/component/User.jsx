@@ -1,8 +1,7 @@
 import React from "react";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addData, fetchData } from "../api/user";
 
-const queryClient = new QueryClient();
 const User = () => {
     const {
         data: userData,
@@ -11,6 +10,8 @@ const User = () => {
     } = useQuery({ queryKey: ["users"], queryFn: fetchData, enabled: true });
 
 
+    const queryClient = useQueryClient()
+
     const { mutate, reset } = useMutation({
         mutationFn: addData,
         onMutate: () => {
@@ -18,7 +19,6 @@ const User = () => {
         },
         onSuccess: (data, variables, context) => {
             queryClient.invalidateQueries({ queryKey: ["users"], exact: true })
-            console.log("first")
         },
     });
 
@@ -33,7 +33,7 @@ const User = () => {
     };
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
                 <input type="text" name="firstName" placeholder="add firstName" />
 
                 <button>Add</button>
