@@ -1,20 +1,16 @@
 {
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "firstName": "demo 1"
     },
     {
-      "id": "2",
+      "id": 2,
       "firstName": "demo 2"
     },
     {
-      "id": "aa97",
+      "id": 3,
       "firstName": "demo 3"
-    },
-    {
-      "id": 4,
-      "firstName": "demo 4"
     }
   ]
 }

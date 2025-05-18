@@ -1,7 +1,8 @@
 import React from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { addData, fetchData } from "../api/user"
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { addData, fetchData } from "../api/user";
 
+const queryClient = new QueryClient();
 const User = () => {
     const {
         data: userData,
@@ -10,17 +11,26 @@ const User = () => {
     } = useQuery({ queryKey: ["users"], queryFn: fetchData, enabled: true });
 
 
-    const { mutate, reset } = useMutation({ mutationFn: addData, })
+    const { mutate, reset } = useMutation({
+        mutationFn: addData,
+        onMutate: () => {
+            return { id: 1 };
+        },
+        onSuccess: (data, variables, context) => {
+            queryClient.invalidateQueries({ queryKey: ["users"], exact: true })
+            console.log("first")
+        },
+    });
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        const formData = new FormData(e.target)
-        const firstName = formData.get("firstName")
-        console.log(firstName)
-        mutate({ id: userData.length + 1, firstName })
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const firstName = formData.get("firstName");
+        console.log(firstName);
+        mutate({ id: userData.length + 1, firstName });
 
-        e.target.reset()
-    }
+        e.target.reset();
+    };
     return (
         <div>
             <form onSubmit={handleSubmit}>
