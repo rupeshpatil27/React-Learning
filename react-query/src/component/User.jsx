@@ -3,17 +3,21 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addData, fetchData } from "../api/user";
 
 const User = () => {
-
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(1);
 
     const {
         data: userData,
         isLoading,
         isError,
-    } = useQuery({ queryKey: ["users", (page)], queryFn: () => fetchData(page), enabled: true });
+    } = useQuery({
+        queryKey: ["users", page],
+        queryFn: () => fetchData(page),
+        enabled: true,
+        // gcTime:1000,   default time is 5 sec
+        staleTime: 10000
+    });
 
-
-    const queryClient = useQueryClient()
+    const queryClient = useQueryClient();
 
     const { mutate, reset } = useMutation({
         mutationFn: addData,
@@ -21,7 +25,7 @@ const User = () => {
             return { id: 1 };
         },
         onSuccess: (data, variables, context) => {
-            queryClient.invalidateQueries({ queryKey: ["users"], exact: true })
+            queryClient.invalidateQueries({ queryKey: ["users"], exact: true });
         },
     });
 
@@ -44,9 +48,19 @@ const User = () => {
             {isLoading && "Loading...."}
             {isError?.message && isError?.message}
             <div className="pages">
-                <button onClick={() => setPage((oldPage) => Math.max(oldPage - 1, 0))}>Prev</button>
+                <button
+                    onClick={() => setPage((oldPage) => Math.max(oldPage - 1, 0))}
+                    disabled={!userData?.prev}
+                >
+                    Prev
+                </button>
                 <span>{page}</span>
-                <button>next</button>
+                <button
+                    onClick={() => setPage((oldPage) => oldPage + 1)}
+                    disabled={!userData?.next}
+                >
+                    next
+                </button>
             </div>
             {userData?.data?.map((item, index) => (
                 <div className="card" key={index}>
