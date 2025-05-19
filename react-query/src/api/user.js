@@ -1,5 +1,9 @@
-const fetchData = async () => {
-  const response = await fetch("http://localhost:3000/users?_sort=-id");
+const fetchData = async (page) => {
+  const response = await fetch(
+    `http://localhost:3000/users?_sort=-id&${
+      page ? `_page=${page}&_per_page=5` : ""
+    }`
+  );
   const data = await response.json();
 
   return data;

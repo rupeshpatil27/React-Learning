@@ -20,3 +20,10 @@ h1{
 .card span{
  font-size: 15px;
 }
+
+
+.pages{
+  display: flex;
+  margin-top: 10px;
+  gap: 10px;
+}

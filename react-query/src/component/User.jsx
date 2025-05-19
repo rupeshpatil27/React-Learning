@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addData, fetchData } from "../api/user";
 
 const User = () => {
+
+    const [page, setPage] = useState(1)
+
     const {
         data: userData,
         isLoading,
         isError,
-    } = useQuery({ queryKey: ["users"], queryFn: fetchData, enabled: true });
+    } = useQuery({ queryKey: ["users", (page)], queryFn: () => fetchData(page), enabled: true });
 
 
     const queryClient = useQueryClient()
@@ -27,7 +30,7 @@ const User = () => {
         const formData = new FormData(e.target);
         const firstName = formData.get("firstName");
         console.log(firstName);
-        mutate({ id: userData.length + 1, firstName });
+        mutate({ id: userData.data.length + 1, firstName });
 
         e.target.reset();
     };
@@ -40,8 +43,12 @@ const User = () => {
             </form>
             {isLoading && "Loading...."}
             {isError?.message && isError?.message}
-
-            {userData?.map((item, index) => (
+            <div className="pages">
+                <button onClick={() => setPage((oldPage) => Math.max(oldPage - 1, 0))}>Prev</button>
+                <span>{page}</span>
+                <button>next</button>
+            </div>
+            {userData?.data?.map((item, index) => (
                 <div className="card" key={index}>
                     <span className="txt">{item.firstName}</span>
                 </div>
