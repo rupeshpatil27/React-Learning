@@ -1,9 +1,12 @@
 .main-container {
-  height: 50rem;
+  /* height: 50rem; */
   padding: 5rem;
   margin: 5rem;
-  display: flex;
-  justify-content: center;
   flex-direction: column;
   background-color: #fff;
+}
+
+h1{
+  text-align: center;
+  margin-bottom: 10px;
 }

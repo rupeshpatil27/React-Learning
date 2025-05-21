@@ -6,22 +6,15 @@ function App() {
 
   const [users, setUsers] = useState([])
 
-  async function getData() {
-    try {
-      const response = await axios.get('https://dummyjson.com/users');
-      // console.log(users)
-      
-      console.log(response.data.users)
-      setUsers(response.data.users)
-    } catch (error) {
-      console.error(error);
-    }
+  const getData = () => {
+    const [data, loading, error] = customReactQuery('https://dummyjson.com/users')
   }
+
   return (
-    <div className="main-container" style={{overflowX:"auto"}}>
+    <div className="main-container" style={{ overflowX: "auto" }}>
       <button onClick={getData}>show user</button>
       <h1>axios</h1>
-      {users.map((item,index)=>(
+      {users.map((item, index) => (
         <h3>{item.firstName}</h3>
       ))}
     </div>
@@ -29,3 +22,32 @@ function App() {
 }
 
 export default App
+
+
+const customReactQuery = (urlPath) => {
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true)
+        setError(false)
+        const response = await axios.get(urlPath);
+        setData(response.data)
+        setLoading(false)
+      } catch (error) {
+        setError(true)
+        setLoading(false)
+      }
+    })()
+
+    // return () => {
+    //   second
+    // }
+  }, [])
+
+  return [data, loading, error]
+
+}
