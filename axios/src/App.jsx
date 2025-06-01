@@ -8,6 +8,7 @@ function App() {
 
   const getData = () => {
     const [data, loading, error] = customReactQuery('https://dummyjson.com/users')
+    setUsers(data.users)
   }
 
   return (
@@ -30,7 +31,7 @@ const customReactQuery = (urlPath) => {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    (async () => {
+    ; (async () => {
       try {
         setLoading(true)
         setError(false)
