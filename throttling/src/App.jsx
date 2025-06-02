@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import useThrottle from './use-throttle'
 
 function App() {
   const [triggerCount, setTriggerCount] = useState(0)
@@ -9,28 +10,38 @@ function App() {
 
   function startCount() {
     setPressedCount((count) => count + 1)
-    ThrottleCount()
+    throttledHandleCount()
   }
 
-  const start = new Date().getTime()
+  // const start = new Date().getTime()
 
-  const myThrottle = useCallback((cb, delay) => {
-    let last = 0;
+  // const myThrottle = useCallback((cb, delay) => {
+  //   let last = 0;
 
-    return function (...args) {
-      let now = new Date().getTime()
-      if (now - last < delay) return;
-      last = now;
-      return cb(...args)
-    };
-  }, []);
+  //   return function (...args) {
+  //     let now = new Date().getTime()
+  //     if (now - last < delay) return;
+  //     last = now;
+  //     return cb(...args)
+  //   };
+  // }, []);
 
-  const ThrottleCount = useCallback(
-    myThrottle(() => {
-      setTriggerCount((count) => count + 1);
-    }, 1000),
-    [myThrottle]
-  );
+  // const ThrottleCount = useCallback(
+  //   myThrottle(() => {
+  //     setTriggerCount((count) => count + 1);
+  //   }, 1000),
+  //   [myThrottle]
+  // );
+
+
+
+  const ThrottleCount = () => {
+    setTriggerCount((count) => count + 1);
+  }
+
+  // custom useThrottle hook
+
+  const throttledHandleCount = useThrottle(ThrottleCount,1000)
 
   return (
     <div className='h-screen w-full flex items-center justify-center'>
