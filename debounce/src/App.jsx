@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -9,23 +9,25 @@ function App() {
 
   function startCount() {
     setPressedCount((count) => count + 1)
-
-    DebounceCount()
+    debouncedCount()
   }
 
-  const myDebounce= (cb, d) =>{
-    let timer;
-
+  const myDebounce = useCallback((cb, delay) => {
+    let timer
     return function (...args) {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
-        console.log(timer)
-        cb(...args)
-      }, d)
-    }
-  }
+        cb(...args);
+      }, delay);
+    };
+  }, []);
 
-  const DebounceCount = myDebounce(() => { setTriggerCount((count) => count + 1) }, 1000)
+  const debouncedCount = useCallback(
+    myDebounce(() => {
+      setTriggerCount((count) => count + 1);
+    }, 800),
+    [myDebounce]
+  );
 
   return (
     <div className='h-screen w-full flex items-center justify-center'>
@@ -37,7 +39,7 @@ function App() {
 
         <div className='flex items-center justify-center gap-5'>
           <span className='text-2xl font-normal'>Pressed</span> : <span>{pressedCount}</span>
-          <span className='text-2xl font-normal'> Trigger</span> : <span>{triggerCount}</span>
+          <span className='text-2xl font-normal'> Trigger</span> : <span>{triggerCount} (count increase when button click stop)</span>
         </div>
 
       </div>
