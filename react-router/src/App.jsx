@@ -11,6 +11,10 @@ import RootLayout from './RootLayout';
 import Home from "./Component/Home";
 import About from "./Component/About";
 import Contact from "./Component/Contact";
+import Page from './Component/Page';
+import Page1 from './Component/page1';
+import Page2 from './Component/page2';
+import Page3 from './Component/page3';
 
 function App() {
   
@@ -20,8 +24,15 @@ function App() {
       element: <RootLayout />,
       children: [
         { path: "Home", element: <Home />, index: true },
-        { path: "About", element: <About /> },
         { path: "Contact", element: <Contact /> },
+        { path: "/About", element: <About />, 
+          children:[
+            { path: "page1", element: <Page1 /> },
+            { path: "page2", element: <Page2 /> },
+            { path: "page3", element: <Page3 /> },
+          ]
+        },
+        { path: "/*", element: <Page /> },
       ],
     },
   ], {
