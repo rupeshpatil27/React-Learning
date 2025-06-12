@@ -1,6 +1,7 @@
-import WelcomePage from "./Component/WelcomePage";
+// import WelcomePage from "./Component/WelcomePage";
 import './App.css'
-import UserState from "./Context/UserState";
+import UserList from './Component/UserList';
+import UserState from "./Context/user/UserState";
 
 function App() {
 
@@ -13,7 +14,9 @@ function App() {
 
 
           <div className='flex items-center justify-center gap-5'>
-            <WelcomePage />
+            {/* <WelcomePage /> */}
+
+            <UserList />
           </div>
         </div>
       </div>
