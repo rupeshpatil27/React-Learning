@@ -8,7 +8,9 @@ const RootLayout = () => {
             <div className="w-full h-full">
                 <NavBar />
 
-                <Outlet />
+               <div className="pt-40">
+                 <Outlet />
+               </div>
             </div>
 
 

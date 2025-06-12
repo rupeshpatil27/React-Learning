@@ -17,7 +17,7 @@ import Page2 from './Component/page2';
 import Page3 from './Component/page3';
 
 function App() {
-  
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -25,8 +25,11 @@ function App() {
       children: [
         { path: "Home", element: <Home />, index: true },
         { path: "Contact", element: <Contact /> },
-        { path: "/About", element: <About />, 
-          children:[
+        {
+          path: "about",
+          element: <About />,
+          children: [
+            { index: true, element: <Page1 /> }, // Default under /about
             { path: "page1", element: <Page1 /> },
             { path: "page2", element: <Page2 /> },
             { path: "page3", element: <Page3 /> },
@@ -43,7 +46,7 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </>
   )
 }
