@@ -3,14 +3,25 @@ import UserContext from "./UserContext";
 
 const UserState = ({ children }) => {
   const [state, setState] = useState(
-    []
-  )
+    { users: [] }
+  );
 
   const addUser = (data) => {
-    setState(() => [...state, data])
-  }
+    setState(() => [...state.users, data]);
+  };
 
-  return <UserContext.Provider value={{ userState: state, addUser: addUser }}> {children}</UserContext.Provider >;
+  const userList = (data) => {
+    setState(prevState => ({
+      ...prevState,
+      users: [...prevState.users, ...data]
+    }));
+  };
+
+  return (
+    <UserContext.Provider value={{ userState: state, addUser: addUser, userList: userList }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export default UserState;
