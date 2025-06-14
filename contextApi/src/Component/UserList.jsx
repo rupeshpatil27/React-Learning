@@ -5,7 +5,7 @@ const UserList = () => {
     const { userState, addUser, userList } = useContext(UserContext);
 
     const [state, setState] = useState({
-        firatName: "",
+        firstName: "",
         lastName: "",
         age: "",
     });
@@ -47,7 +47,7 @@ const UserList = () => {
 
     return (
         <div className="h-full w-[50rem] bg-white py-5 px-5 rounded-3xl flex flex-col items-center justify-center gap-5">
-            User Count:{userState.length}
+            User Count:{userState.users.length}
             <ul className="flex items-center justify-center gap-2">
                 {Object.keys(state).map((keys, index) => (
 

@@ -7,7 +7,10 @@ const UserState = ({ children }) => {
   );
 
   const addUser = (data) => {
-    setState(() => [...state.users, data]);
+    setState(prevState => ({
+      ...prevState,
+      users: [...prevState.users, data]
+    }));
   };
 
   const userList = (data) => {
