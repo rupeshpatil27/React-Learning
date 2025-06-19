@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { addTodo } from "./features/Todo/todoSlice"
+import { addTodo, removeTodo } from "./features/Todo/todoSlice"
+
+import { AiOutlineClose } from "react-icons/ai";
 
 function App() {
 
@@ -8,6 +10,11 @@ function App() {
 
   const { todos } = useSelector((state) => state.todo)
   const dispatch = useDispatch()
+
+  const handdleTodo = () => {
+    dispatch(addTodo(todo))
+    setTodo("")
+  }
 
   return (
     <div className='h-full w-full'>
@@ -17,17 +24,19 @@ function App() {
         <input type="text" value={todo}
           onChange={(e) => setTodo(e.target.value)} placeholder="Enter Todo" className="min-w-[25rem] bg-[#282732] h-10 px-2 py-2 outline-0 focus:border-[1px] focus:border-white rounded-md font-semibold text-white" />
 
-        <button className="bg-[#282732] text-lg font-bold py-2 px-10 rounded-sm text-white cursor-pointer" onClick={() => dispatch(addTodo(todo))}>
+        <button className="bg-[#282732] text-lg font-bold py-2 px-10 rounded-sm text-white cursor-pointer" onClick={handdleTodo}>
           Add
         </button>
       </div>
 
       <div className="w-full h-full flex justify-center items-center flex-col gap-3 mt-15">
 
-        {todos && todos.map(todo => (
-          <div key={todo.id} className="py-4 px-5 text-[16px] font-semibold bg-gradient-to-b from-[#282b4b] to-[#1f1e39] flex items-start justify-start w-1/2 rounded-lg">
-            <p className="text-[#d9ecff] font-semibold text-lg mr-2.5">{todo.id}.</p>
-            <p className="text-[#d9ecff] font-semibold text-lg">{todo.text} </p>
+        {todos && todos.map((todo, index) => (
+          <div key={todo.id} className="py-4 relative px-3 text-[16px] font-semibold bg-gradient-to-b from-[#282b4b] to-[#1f1e39] flex items-center justify-start w-1/2 rounded-lg cursor-pointer">
+            <p className="text-[#d9ecff] font-semibold text-lg mr-2.5">{index+1}.</p>
+            <p className="text-[#d9ecff] font-semibold text-lg overflow-hidden text-ellipsis break-words whitespace-normal pr-10">{todo.text} </p>
+
+            <AiOutlineClose className="text-white size-7 absolute top-1/2 right-5 -translate-y-1/2 hover:rotate-90 duration-200" onClick={() => dispatch(removeTodo(todo.id))} />
           </div>
         ))}
 
