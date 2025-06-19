@@ -14,6 +14,8 @@ function App() {
   const dragItem = useRef();
   const dragOverItem = useRef();
 
+  const [draggingIndex, setDraggingIndex] = useState(null);
+
   const handdleTodo = () => {
     dispatch(addTodo(todo))
     setTodo("")
@@ -22,6 +24,7 @@ function App() {
 
   const handleDragStart = (index) => {
     dragItem.current = index;
+    setDraggingIndex(index);
   };
 
   const handleDragEnter = (index) => {
@@ -38,6 +41,8 @@ function App() {
 
     dragItem.current = null;
     dragOverItem.current = null;
+
+    setDraggingIndex(null);
   };
 
 
@@ -58,10 +63,12 @@ function App() {
 
         {todos && todos.map((todo, index) => (
           <div
+            draggable
             onDragStart={() => handleDragStart(index)}
             onDragEnter={() => handleDragEnter(index)}
             onDragEnd={handleDragEnd}
-            key={todo.id} className="py-4 relative px-3 text-[16px] font-semibold bg-gradient-to-b from-[#282b4b] to-[#1f1e39] flex items-center justify-start w-1/2 rounded-lg cursor-pointer">
+            key={todo.id} className={`py-4 relative px-3 text-[16px] font-semibold bg-gradient-to-b from-[#282b4b] to-[#1f1e39] 
+              flex items-center justify-start w-1/2 rounded-lg transition-all duration-300 ease-in-out select-none ${draggingIndex === index ? "cursor-move" : "cursor-pointer"}`}>
             <p className="text-[#d9ecff] font-semibold text-lg mr-2.5">{index + 1}.</p>
             <p className="text-[#d9ecff] font-semibold text-lg overflow-hidden text-ellipsis break-words whitespace-normal pr-10">{todo.text} </p>
 
