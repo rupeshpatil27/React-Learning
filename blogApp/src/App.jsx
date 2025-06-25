@@ -19,9 +19,8 @@ function App() {
 
       <div className="w-full h-full flex justify-center items-center flex-col gap-3 mt-15">
 
-
         <div className="p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+          <div className="w-full flex items-stretch justify-center flex-wrap gap-5">
             {blogs.posts && blogs.posts.map((item, index) => (
               <Blog data={item} />
             ))}
