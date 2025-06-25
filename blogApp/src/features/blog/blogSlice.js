@@ -8,7 +8,7 @@ export const fetchBlogs = createAsyncThunk("blogs/fetchBlogs", async () => {
 
     return await response.data;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw thunkApi.rejectWithValue(error.response.data.message);
   }
 });
@@ -28,7 +28,15 @@ export const blogSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchBlogs.fulfilled, (state, action) => {
-      state.blogs = action.payload;    
+      state.blogs = {
+        ...action.payload,
+        posts: action.payload.posts.map((post) => ({
+          ...post,
+          image: `https://picsum.photos/800/600?random=${Math.floor(
+            Math.random() * 1000
+          )}`,
+        })),
+      };
       state.isLoading = false;
     });
     builder.addCase(fetchBlogs.rejected, (state, action) => {

@@ -1,13 +1,14 @@
 import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
 import { FiEye } from "react-icons/fi";
 
+// `https://picsum.photos/800/600?random=${Math.floor(Math.random() * 1000)}`
 
 const Blog = ({ data }) => {
   return (
     <div className="w-1/4 h-full flex flex-col relative shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
 
       <div className="flex-1 aspect-square bg-gray-200 overflow-hidden">
-        <img src={`https://picsum.photos/800/600?random=${Math.floor(Math.random() * 1000)}`} alt="Blog Cover" className="w-full m-auto block object-cover flex-shrink-0 flex-grow-0 aspect-square group-hover:scale-[1.2] duration-200" />
+        <img src={data.image} alt="Blog Cover" className="w-full m-auto block object-cover flex-shrink-0 flex-grow-0 aspect-square group-hover:scale-[1.2] duration-200" />
       </div>
 
       <div className="p-5 hover:cursor-pointer">
