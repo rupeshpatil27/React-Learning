@@ -5,7 +5,7 @@ import { FiEye } from "react-icons/fi";
 
 const Blog = ({ data }) => {
   return (
-    <div className="w-1/4 h-full flex flex-col relative shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
+    <div className="row-span-2 md:col-span-2 h-[23rem] md:h-full flex flex-col relative shadow-lg rounded-lg overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
 
       <div className="flex-1 aspect-square bg-gray-200 overflow-hidden">
         <img src={data.image} alt="Blog Cover" className="w-full m-auto block object-cover flex-shrink-0 flex-grow-0 aspect-square group-hover:scale-[1.2] duration-200" />

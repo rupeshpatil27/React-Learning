@@ -13,7 +13,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
 
-  const filteredBlogs = blogs.posts?.filter((post) =>
+  const filteredBlogs = blogs.filter((post) =>
     post.title.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -43,20 +43,17 @@ function App() {
         </div>
       )}
 
-      <div className="w-full h-full flex justify-center items-center flex-col gap-3 mt-15">
-        <div className="p-6">
-          <div className="w-full flex items-stretch justify-center flex-wrap gap-5">
-            {filteredBlogs?.length > 0 ? (
-              filteredBlogs.map((item, index) => (
-                <Blog key={item.id || index} data={item} />
-              ))
-            ) : (
-              <p className="text-center text-gray-500 mt-5">No blogs found.</p>
-            )}
-          </div>
-        </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-8 md:auto-rows-[12rem] mt-12 px-4 py-4">
+        {filteredBlogs?.length > 0 ? (
+          filteredBlogs.map((item, index) => (
+            <Blog key={item.id || index} data={item} />
+          ))
+        ) : (
+          <p className="text-center text-gray-500 mt-5">No blogs found.</p>
+        )}
       </div>
     </div>
+
   );
 }
 

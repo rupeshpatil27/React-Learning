@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-// import { addBlog } from "../features/blog/blogSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addBlog } from "../features/blog/blogSlice";
 
 function CreateBlog({ onClose }) {
+  const { blogs, loading, error } = useSelector((state) => state.blog);
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
@@ -10,6 +11,11 @@ function CreateBlog({ onClose }) {
     body: "",
     tags: "",
   });
+
+  const generateRandomImage = () => {
+    const randomNumber = Math.floor(Math.random() * 1000);
+    return `https://picsum.photos/800/600?random=${randomNumber}`;
+  };
 
   const handleChange = (e) => {
     setForm({
@@ -22,12 +28,20 @@ function CreateBlog({ onClose }) {
     e.preventDefault();
 
     const newBlog = {
+      id: blogs.length + 1,
       title: form.title,
       body: form.body,
       tags: form.tags.split(",").map((tag) => tag.trim()),
+      reactions: {
+        likes: Math.floor(Math.random() * 500) + 1,
+        dislikes: Math.floor(Math.random() * 300) + 1
+      },
+      views: Math.floor(Math.random() * 1000) + 1,
+      image: generateRandomImage()
     };
 
-    // dispatch(addBlog(newBlog));
+
+    dispatch(addBlog(newBlog));
     setForm({ title: "", body: "", tags: "" });
     onClose(); // close the form
   };
@@ -77,6 +91,9 @@ function CreateBlog({ onClose }) {
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700"
         />
       </div>
+
+      {loading && <div className="text-cyan-500">Adding blog...</div>}
+      {error && <div className="text-red-500">{error}</div>}
 
       <div className="flex items-center justify-between">
         <button
