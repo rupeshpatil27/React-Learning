@@ -31,6 +31,62 @@
       },
       "views": 740,
       "image": "https://picsum.photos/800/600?random=295"
+    },
+    {
+      "id": 3,
+      "title": "demo 3",
+      "body": "test",
+      "tags": [
+        "test"
+      ],
+      "reactions": {
+        "likes": 439,
+        "dislikes": 69
+      },
+      "views": 283,
+      "image": "https://picsum.photos/800/600?random=486"
+    },
+    {
+      "id": 4,
+      "title": "demo 4",
+      "body": "demo 4",
+      "tags": [
+        "travle"
+      ],
+      "reactions": {
+        "likes": 58,
+        "dislikes": 4
+      },
+      "views": 660,
+      "image": "https://picsum.photos/800/600?random=979"
+    },
+    {
+      "id": 5,
+      "title": "demo 5",
+      "body": "demo 5",
+      "tags": [
+        "demo"
+      ],
+      "reactions": {
+        "likes": 343,
+        "dislikes": 170
+      },
+      "views": 956,
+      "image": "https://picsum.photos/800/600?random=266"
+    },
+    {
+      "id": 6,
+      "title": "demo6",
+      "body": "demo 6",
+      "tags": [
+        "demo"
+      ],
+      "reactions": {
+        "likes": 179,
+        "dislikes": 145
+      },
+      "views": 918,
+      "image": "https://picsum.photos/800/600?random=999"
     }
   ]
 }

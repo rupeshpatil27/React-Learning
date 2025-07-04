@@ -1,33 +1,64 @@
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
-import { FiEye } from "react-icons/fi";
+import BlogCard from "./BlogCard";
+import { FiPlus } from "react-icons/fi";
+import CreateBlog from "./CreateBlog";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import SearchBox from "./SearchBox";
 
-// `https://picsum.photos/800/600?random=${Math.floor(Math.random() * 1000)}`
+const Blog = () => {
+  const { blogs } = useSelector((state) => state.blog);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showSearchBox, setShowSearchBox] = useState(false);
 
-const Blog = ({ data }) => {
   return (
-    <div className="row-span-2 md:col-span-2 h-[23rem] md:h-full flex flex-col relative shadow-lg rounded-lg overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+    <div className="h-full w-full relative">
+      <h1 className="text-4xl font-extrabold text-center">Blogs</h1>
 
-      <div className="flex-1 aspect-square bg-gray-200 overflow-hidden">
-        <img src={data.image} alt="Blog Cover" className="w-full m-auto block object-cover flex-shrink-0 flex-grow-0 aspect-square group-hover:scale-[1.2] duration-200" />
-      </div>
+      <div className="w-full px-5 py-2 mt-5">
+        <div className="flex justify-center items-center gap-5">
+          {/* <input
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="px-2 py-2 bg-neutral-300 w-[20rem] rounded-md"
+          /> */}
 
-      <div className="p-5 hover:cursor-pointer">
-        <h2 className="text-xl font-semibold text-gray-800 mb-5 hover:text-cyan-500 text-left">{data?.title || "Untitled Blog"}</h2>
-          <div className="flex justify-between  text-sm items-center">
-            <div className="flex items-center space-x-1 hover:scale-[1.1] duration-200">
-              <AiOutlineLike className="text-green-500" />
-              <span>{data?.reactions?.likes || 0}</span>
-            </div>
-            <div className="flex items-center space-x-1 hover:scale-[1.1] duration-200">
-              <AiOutlineDislike className="text-red-500" />
-              <span>{data?.reactions?.dislikes || 0}</span>
-            </div>
-            <div className="flex items-center space-x-1 hover:scale-[1.1] duration-200">
-              <FiEye className="text-blue-500" />
-              <span>{data?.views || 0}</span>
-            </div>
+          <div
+            className="px-4 py-2 bg-neutral-300 w-[20rem] rounded-md cursor-pointer"
+            onClick={() => setShowSearchBox(true)}
+          >
+            <p className="text-sm md:text-lg text-neutral-500 font-semibold">
+              Search..
+            </p>
           </div>
+          <FiPlus
+            onClick={() => setShowAddForm(!showAddForm)}
+            className="size-10 bg-cyan-400 text-4xl text-white rounded-full hover:bg-cyan-600 cursor-pointer"
+          />
+        </div>
       </div>
+
+      {showAddForm && (
+        <div className="flex justify-center mt-5">
+          <CreateBlog onClose={() => setShowAddForm(false)} />
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-8 md:auto-rows-[12rem] mt-12 px-4 py-4">
+        {blogs?.length > 0 ? (
+          blogs.map((item, index) => (
+            <BlogCard key={item.id || index} data={item} />
+          ))
+        ) : (
+          <p className="text-center text-gray-500 mt-5">No blogs found.</p>
+        )}
+      </div>
+
+      {showSearchBox && (
+        <SearchBox
+          onClose={() => setShowSearchBox(false)}
+        />
+      )}
     </div>
   );
 };
