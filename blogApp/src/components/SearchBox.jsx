@@ -7,9 +7,11 @@ const SearchBox = ({ onClose }) => {
     const { blogs } = useSelector((state) => state.blog);
     const [search, setSearch] = useState("");
 
-    const filteredBlogs = blogs.filter(blog =>
-        blog.title.toLowerCase().includes(search.toLowerCase())
-    );
+    const filteredBlogs = search.trim()
+        ? blogs.filter(blog =>
+            blog.title.toLowerCase().includes(search.toLowerCase())
+        )
+        : [];
 
     return (
         <div className="fixed inset-0 bg-black/50 bg-opacity-40 flex items-center justify-center z-50">
@@ -24,11 +26,11 @@ const SearchBox = ({ onClose }) => {
                     />
 
                     {/* Close Button */}
-                    <AiOutlineClose onClick={onClose} className="text-red-500 size-10 cursor-pointer" />
+                    <AiOutlineClose onClick={() => { setSearch(""); onClose(); }} className="text-red-500 size-10 cursor-pointer" />
                 </div>
 
                 {/* Filtered Results */}
-                <div className="mt-4 grid grid-cols-12 md:auto-rows-[10rem] gap-2 py-2 px-1 bg-amber-500 overflow-auto">
+                <div className="mt-4 grid grid-cols-8 md:auto-rows-[10rem] gap-2 py-2 px-1 overflow-auto">
                     {filteredBlogs.length > 0 ? (
                         filteredBlogs.map((item, index) => (
                             <BlogCard key={item.id || index} data={item} />

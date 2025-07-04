@@ -1,21 +1,42 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { createBrowserRouter, RouterProvider } from "react-router";
+
+import { useDispatch } from "react-redux";
+
 import { fetchBlogs } from "./features/blog/blogSlice";
-import Blog from "./components/Blog";
+
+import Blog from "./Pages/Blog";
+import RootLayout from "./RootLayout";
+import BlogDetails from "./Pages/BlogDetails";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchBlogs());
-  }, [dispatch]);
+  }, []);
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <RootLayout />,
+      children: [
+        { path: "/", element: <Blog />, index: true },
+        { path: "/:id", element: <BlogDetails /> },
+
+      ],
+    },
+  ], {
+    future: {
+      v7_relativeSplatPath: true,
+    },
+  });
 
   return (
     <>
-      <Blog />
+      <RouterProvider router={router} />
     </>
-
   );
 }
 

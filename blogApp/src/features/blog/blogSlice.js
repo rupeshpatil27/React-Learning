@@ -7,10 +7,20 @@ export const fetchBlogs = createAsyncThunk(
   async (_, thunkApi) => {
     try {
       const response = await axios.get("http://localhost:3000/blogs");
-
       return await response.data;
     } catch (error) {
-      console.log(error);
+      throw thunkApi.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const fetchBlogDetails = createAsyncThunk(
+  "blogs/fetchBlogDetails",
+  async (id, thunkApi) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/blogs?id=${id}`);
+      return response.data[0];
+    } catch (error) {
       throw thunkApi.rejectWithValue(error.response.data.message);
     }
   }
@@ -30,6 +40,7 @@ export const addBlog = createAsyncThunk(
 
 const initialState = {
   blogs: [],
+  blog:null,
   error: null,
   isLoading: false,
 };
@@ -56,10 +67,23 @@ export const blogSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(addBlog.fulfilled, (state, action) => {
-      state.blogs.push(action.payload);
+      state.blogs = [...state.blogs, action.payload];
       state.isLoading = false;
     });
     builder.addCase(addBlog.rejected, (state, action) => {
+      state.error = action.payload;
+      state.isLoading = false;
+    });
+   
+    builder.addCase(fetchBlogDetails.pending, (state) => {
+      state.error = null;
+      state.isLoading = true;
+    });
+    builder.addCase(fetchBlogDetails.fulfilled, (state, action) => {
+      state.blog = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(fetchBlogDetails.rejected, (state, action) => {
       state.error = action.payload;
       state.isLoading = false;
     });
@@ -70,13 +94,3 @@ export const blogSlice = createSlice({
 // export const { } = blogSlice.actions;
 
 export default blogSlice.reducer;
-
-// state.blogs = {
-//         ...action.payload,
-//         posts: action.payload.posts.map((post) => ({
-//           ...post,
-//           image: `https://picsum.photos/800/600?random=${Math.floor(
-//             Math.random() * 1000
-//           )}`,
-//         })),
-//       };
