@@ -22,4 +22,6 @@ This repository documents my journey of understanding core React concepts throug
 - ✅ react-query
 - ✅ axios
 - ✅ Debouncing, throttling
+- ✅ Controlled & Uncontrolled component
+- ✅ Material UI components
 
