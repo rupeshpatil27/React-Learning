@@ -1,4 +1,6 @@
 import './App.css'
+import ErrorBoundary from './component/ErrorBoundary'
+import Welcome from './component/Welcome'
 
 function App() {
   
@@ -10,7 +12,10 @@ function App() {
 
 
         <div className='flex items-center justify-center gap-5'>
-          
+
+          <ErrorBoundary>
+            <Welcome/>
+          </ErrorBoundary>
         </div>
 
       </div>
