@@ -17,6 +17,7 @@ This repository documents my journey of understanding core React concepts throug
 - ✅ React Router
 - ✅ Custom Hooks
 - ✅ forwardRef
+- ✅ useImperativeHandle
 - ✅ Context API
 - ✅ redux toolkit
 - ✅ react-query
