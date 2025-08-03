@@ -1,22 +1,18 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import SearchInput from "./component/SearchInput";
+import { shuffle } from "lodash"
 
 const initialUsers = ["Alice", "Bob", "Charlie", "David", "Eva"];
 function App() {
   const [users, setUsers] = useState(initialUsers);
 
-  const handleSearch = (text) => {
+  const handleSearch = useCallback((text) => {
+    console.log("First user from the users list:", users[0] || "No users found");
     const filteredUsers = users.filter((user) =>
-      user.toLowerCase().includes(text.toLowerCase())
+      user.includes(text)
     );
-    setUsers(text ? filteredUsers : initialUsers);
-  };
-
-  // Shuffle users
-  const shuffleUsers = () => {
-    const shuffled = [...users].sort(() => Math.random() - 0.5);
-    setUsers(shuffled);
-  };
+    setUsers(filteredUsers);
+  }, [users])
 
   return (
     <div className="h-screen w-full flex items-center justify-center">
@@ -25,7 +21,7 @@ function App() {
 
         <div className="space-x-4 flex flex-row gap-5 items-center my-5">
           <button
-            onClick={shuffleUsers}
+            onClick={() => setUsers(shuffle(initialUsers))}
             className="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-lg hover:bg-blue-600 focus:outline-none transition-all"
           >
             Shuffle
