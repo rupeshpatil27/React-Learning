@@ -10,7 +10,7 @@ This repository documents my journey of understanding core React concepts throug
 
 - ✅ JSX & Components
 - ✅ Props & State
-- ✅ useState, useEffect, usememo
+- ✅ useState, useEffect, useMemo, useCallback
 - ✅ Conditional Rendering
 - ✅ Forms and Events
 - ✅ React Hook Form
