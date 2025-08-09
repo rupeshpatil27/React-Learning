@@ -26,4 +26,5 @@ This repository documents my journey of understanding core React concepts throug
 - ✅ Debouncing, throttling
 - ✅ Controlled & Uncontrolled component
 - ✅ Material UI components
+- ✅ File Upload
 
