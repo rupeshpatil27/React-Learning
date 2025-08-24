@@ -1,45 +1,21 @@
-import { useState, useEffect } from 'react';
+import useLocalStorage from "./component/useLocalStorage";
 
 function App() {
-
-  const [data, setData]= useState('');
-
-  useEffect(() => {
-    const storedData = localStorage.getItem('data');
-    if (storedData) {
-      setData(storedData);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (data) {
-      localStorage.setItem('data', data);
-    }
-  }, [data]);
+  const [count, setCount,reset] = useLocalStorage("count", 0);
 
   return (
-    <div className='h-screen w-full flex items-center justify-center gap-2 p-10'>
-      <div className='h-full w-full p-[15] rounded-2xl'>
+    <div className="h-screen w-full p-10">
+      <h1 className="text-4xl font-extrabold text-center my-10">LocalStorage</h1>
+      <div className="flex flex-col items-center justify-center gap-5 space-y-5">
+        <p className="text-2xl font-semibold text-gray-400">{count}</p>
 
-        <h1 className='text-4xl font-extrabold text-center my-5'>LocalStorage</h1>
-
-        <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-          Enter your name
-        </h2>
-        <input
-          type="text"
-          value={data}
-          onChange={(e) => setData(e.target.value)}
-          placeholder="Your name"
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <p className="mt-4 text-lg text-gray-700">
-          Hello, <span className="font-semibold">{data || 'stranger'}</span>!
-        </p>
-
+        <div className="flex items-center gap-5">
+          <button onClick={() => setCount(count + 1)}>Count</button>
+          <button onClick={reset}>Reset</button>
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
