@@ -6,23 +6,23 @@
   background-color: #fff;
 }
 
-h1{
+.main-container h1{
   text-align: center;
   margin-bottom: 10px;
 }
 
-.card{
+.main-container .card{
   background-color: #f6f6f6;
   padding: 10px;
   margin-top: 10px;
 }
 
-.card span{
+.main-container .card span{
  font-size: 15px;
 }
 
 
-.pages{
+.main-container .pages{
   display: flex;
   margin-top: 10px;
   gap: 10px;

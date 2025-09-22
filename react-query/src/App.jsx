@@ -1,13 +1,16 @@
 import './App.css'
+import Project from './component/Project'
+import ProductGrid from './component/Project'
 import User from './component/user'
 
 function App() {
 
 
   return (
-    <div className="main-container" style={{ overflowX: "auto" }}>
-      <h1>React Query</h1>
-      <User />
+    <div className="w-full h-full">
+      {/*  <User /> */}  {/* basics of react query */}
+
+      <Project/>
     </div>
   )
 }
