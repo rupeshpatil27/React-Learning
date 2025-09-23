@@ -1,7 +1,6 @@
 import './App.css'
 import Project from './component/Project'
-import ProductGrid from './component/Project'
-import User from './component/user'
+// import User from './component/user'
 
 function App() {
 
