@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { FaCube, FaStar, FaTag } from "react-icons/fa6";
 import { fetchProducts } from "../api/product";
-import { useState } from "react";
+
 import Pagination from "./Pagination";
 
 const ProductCard = ({ product }) => {
@@ -14,6 +15,7 @@ const ProductCard = ({ product }) => {
       />
       <div className="p-4 space-y-2">
         <h2 className="text-lg font-semibold text-gray-800">{product.title}</h2>
+        <h2 className="text-lg font-semibold text-gray-800">{product.id}</h2>
 
         <div className="flex items-center justify-between">
           <span className="text-gray-900 font-bold">
@@ -45,29 +47,33 @@ const ProductCard = ({ product }) => {
 };
 
 const Project = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
+  const currentPage = parseInt(searchParams.get("page")) || 1;
+  const pageSize = parseInt(searchParams.get("limit")) || 10;
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", { page: currentPage, limit: pageSize }],
     queryFn: fetchProducts,
+    placeholderData: keepPreviousData,
   });
 
-  // Calculate which data to display based on the page size and current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = data?.products.slice(indexOfFirstItem, indexOfLastItem);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handlePageChange = (newPage) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("page", newPage);
+      return params;
+    });
   };
 
   const handlePageSizeChange = (newSize) => {
-    setItemsPerPage(newSize);
-    setCurrentPage(1); // Reset to the first page when page size changes
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("limit", newSize);
+      params.set("page", 1);
+      return params;
+    });
   };
-
 
   if (isLoading) {
     return <h1>Loading...</h1>;
@@ -80,26 +86,28 @@ const Project = () => {
   return (
     <div className="flex justify-center items-center mt-10 px-10">
       <div className="w-full flex items-stretch flex-col box-border bg-white rounded-xl container-shadow">
-        <div className="w-full flex items-center justify-start px-5 py-4 relative">
+        <div className="w-full flex items-center justify-between px-5 py-4 relative">
           <div className="text-xl font-medium">Projects</div>
+
           <div className="absolute bottom-0 inset-x-0 border-b border-light border-opacity-10 w-full mt-2" />
         </div>
 
         <div className="w-full py-1 my-5 px-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-            {currentData.map((product, index) => (
+            {data?.products.map((product, index) => (
               <ProductCard product={product} key={index} />
             ))}
           </div>
-
         </div>
-          {/* Pagination Component */}
+         {/* Pagination Component */}
           <Pagination
             totalItems={data?.total || 0}
-            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            pageSize={pageSize}
             onPageChange={handlePageChange}
             onPageSizeChange={handlePageSizeChange}
           />
+
       </div>
     </div>
   );
