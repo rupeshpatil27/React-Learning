@@ -1,5 +1,6 @@
 import './App.css'
-import Project from './component/Project'
+import Products from './component/Products'
+import Searchbar from './component/Searchbar'
 // import User from './component/user'
 
 function App() {
@@ -9,7 +10,11 @@ function App() {
     <div className="w-full h-full">
       {/*  <User /> */}  {/* basics of react query */}
 
-      <Project/>
+      <div className='mt-20 max-w-lg w-full m-auto flex flex-col items-center'>
+        <Searchbar />
+      </div>
+
+      <Products />
     </div>
   )
 }
