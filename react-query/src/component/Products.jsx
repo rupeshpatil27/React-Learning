@@ -1,9 +1,11 @@
 import { useSearchParams } from "react-router";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { FaCube, FaStar, FaTag } from "react-icons/fa6";
-import { fetchProducts } from "../api/product";
+import { fetchCategories, fetchProducts } from "../api/product";
 
 import Pagination from "./Pagination";
+import Dropdown from "./Dropdown";
+import { useState } from "react";
 
 const ProductCard = ({ product }) => {
   return (
@@ -49,8 +51,16 @@ const ProductCard = ({ product }) => {
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const [selectedOption, setSelectedOption] = useState("");
+
   const currentPage = parseInt(searchParams.get("page")) || 1;
   const pageSize = parseInt(searchParams.get("limit")) || 10;
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+    placeholderData: keepPreviousData,
+  });
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products", { page: currentPage, limit: pageSize }],
@@ -89,6 +99,21 @@ const Products = () => {
         <div className="w-full flex items-center justify-between px-5 py-4 relative">
           <div className="text-xl font-medium">Products</div>
 
+          <Dropdown
+            value={selectedOption}
+            handleChange={(e) => {
+              setSelectedOption(e.target.value)
+
+              setSearchParams((prev) => {
+                const params = new URLSearchParams(prev);
+                params.set("limit", newSize);
+                params.set("page", 1);
+                return params;
+              })
+            }}
+            dropdownOptions={categories}
+          />
+
           <div className="absolute bottom-0 inset-x-0 border-b border-light border-opacity-10 w-full mt-2" />
         </div>
 
@@ -118,4 +143,3 @@ const Products = () => {
 };
 
 export default Products;
-

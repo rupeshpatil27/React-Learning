@@ -10,11 +10,15 @@ function App() {
     <div className="w-full h-full">
       {/*  <User /> */}  {/* basics of react query */}
 
-      <div className='mt-20 max-w-lg w-full m-auto flex flex-col items-center'>
-        <Searchbar />
+      <div className='fixed top-0 w-full py-3 bg-white z-40'>
+        <div className='max-w-lg w-full m-auto flex flex-col items-center'>
+          <Searchbar />
+        </div>
       </div>
 
-      <Products />
+      <div className='mt-20'>
+        <Products />
+      </div>
     </div>
   )
 }

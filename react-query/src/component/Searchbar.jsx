@@ -1,62 +1,77 @@
-import { useEffect, useRef, useState } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
-import { useSearchParams } from "react-router";
 import { autoSuggest } from "../api/product";
 import { useQuery } from "@tanstack/react-query";
+import { useDebounce } from "../hook/useDebounce.js";
+import { AiOutlineSearch } from "react-icons/ai";
+import { useEffect, useRef, useState } from "react";
 
 const Searchbar = () => {
   const [input, setInput] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
+  const searchConRef = useRef(null);
 
-   useEffect(() => {
-      function handleClickOutside(event) {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-          setIsOpen(false);
-        }
+  const debouncedInput = useDebounce(input, 500);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        searchConRef.current &&
+        !searchConRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
       }
-  
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["products", { q: input }],
+    queryKey: ["products", { q: debouncedInput }],
     queryFn: autoSuggest,
+    enabled: debouncedInput.trim().length > 0,
+    staleTime: 60 * 1000,
+    cacheTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
   });
 
   return (
     <>
-      <div className="search-container" ref={dropdownRef}  onClick={() => setIsOpen(!isOpen)}>
+      <div
+        className={`search-container${
+          isOpen && data?.products?.length > 0 ? " show" : ""
+        }`}
+        ref={searchConRef}
+      >
         <AiOutlineSearch className="search-icon" />
-        <div className="search-box">
+        <div className="search-input-container">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Search...."
+            onFocus={() => setIsOpen(!isOpen)}
+            placeholder="Search for Products, Brands and More"
             className="search-input"
           />
         </div>
+        {isOpen && data?.products?.length > 0 && (
+          <ul className="search-result-container show">
+            {data?.products.map((r, i) => (
+              <li key={r.id}>
+                <a className="search-result-list">
+                  <div className="thumbnail">
+                    <img src={r.thumbnail} alt={r.thumbnail} />
+                  </div>
 
-        <div
-          className={`absolute z-10 mt-1 w-full bg-white rounded-lg [box-shadow:2px_3px_5px_-1px_rgba(0,0,0,0.5)]
- transition-all duration-200 overflow-hidden ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
-            }`}
-        >
-          <ul className="p-1 text-sm text-black">
-            {data?.products.map((r,i) => (
-              <li
-                key={i.id}
-                
-                className={`cursor-pointer rounded-md px-4 py-2 hover:bg-[#f6f6f6]}`}
-              >
-                {r.title}
+                  <div className="result-txt">
+                    {/* <span className="typed-txt">{input}</span> */}
+                    {r.title}
+                    <div className="highlighted-txt">{r.category}</div>
+                  </div>
+                </a>
               </li>
             ))}
           </ul>
-        </div>
-
+        )}
       </div>
     </>
   );
