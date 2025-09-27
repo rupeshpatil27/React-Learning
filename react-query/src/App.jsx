@@ -10,6 +10,8 @@ function App() {
     <div className="w-full h-full">
       {/*  <User /> */}  {/* basics of react query */}
 
+
+      {/* Advanced React Query - pagination, search, and filters */}
       <div className='fixed top-0 w-full py-3 bg-white z-40'>
         <div className='max-w-lg w-full m-auto flex flex-col items-center'>
           <Searchbar />
@@ -19,6 +21,7 @@ function App() {
       <div className='mt-20'>
         <Products />
       </div>
+
     </div>
   )
 }
