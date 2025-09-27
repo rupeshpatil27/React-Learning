@@ -51,7 +51,9 @@ const ProductCard = ({ product }) => {
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState(
+    searchParams.get("category") || ""
+  );
 
   const currentPage = parseInt(searchParams.get("page")) || 1;
   const pageSize = parseInt(searchParams.get("limit")) || 10;
@@ -63,7 +65,10 @@ const Products = () => {
   });
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["products", { page: currentPage, limit: pageSize }],
+    queryKey: [
+      "products",
+      { page: currentPage, limit: pageSize, category: selectedOption },
+    ],
     queryFn: fetchProducts,
     placeholderData: keepPreviousData,
   });
@@ -102,16 +107,17 @@ const Products = () => {
           <Dropdown
             value={selectedOption}
             handleChange={(e) => {
-              setSelectedOption(e.target.value)
+              setSelectedOption(e.target.value);
 
               setSearchParams((prev) => {
                 const params = new URLSearchParams(prev);
-                params.set("limit", newSize);
                 params.set("page", 1);
+                params.set("category", e.target.value);
                 return params;
-              })
+              });
             }}
             dropdownOptions={categories}
+            dropdownTitle="Select Category"
           />
 
           <div className="absolute bottom-0 inset-x-0 border-b border-light border-opacity-10 w-full mt-2" />

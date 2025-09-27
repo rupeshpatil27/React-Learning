@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const Dropdown = ({ value, handleChange, dropdownOptions }) => {
+const Dropdown = ({ value, handleChange, dropdownOptions,dropdownTitle="Select" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -38,7 +38,7 @@ const Dropdown = ({ value, handleChange, dropdownOptions }) => {
         className="w-full inline-flex items-center justify-between border border-[rgba(132,139,200,0.18)] rounded-lg px-3 py-1.5 text-sm font-normal text-black hover:border-blue-500 transition-all"
       >
         <span className="truncate block max-w-full">{value.replace(/-/g, " ")
-          .replace(/\b\w/g, (char) => char.toUpperCase()) || "Select"}</span>
+          .replace(/\b\w/g, (char) => char.toUpperCase()) || dropdownTitle}</span>
         <span className="float-right">
           <svg
             viewBox="64 64 896 896"
