@@ -20,4 +20,18 @@ const addData = async (data) => {
   return response.json();
 };
 
-export { fetchData, addData };
+// Advanced React Query
+
+const fetchUserById = async (id) => {
+  const response = await fetch(`https://dummyjson.com/users/${id}`);
+  const data = await response.json();
+  return data;
+};
+
+const fetchPostsByUserId = async (id) => {
+  const response = await fetch(`https://dummyjson.com/posts/user/${id}`);
+  const data = await response.json();
+  return data;
+};
+
+export { fetchData, addData, fetchUserById, fetchPostsByUserId };
