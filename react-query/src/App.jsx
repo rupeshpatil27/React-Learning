@@ -1,6 +1,7 @@
 import './App.css'
 import Products from './component/Products'
 import Searchbar from './component/Searchbar'
+import Users from './component/Users'
 // import User from './component/user'
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
 
 
       {/* Advanced React Query - pagination, search, and filters */}
-      <div className='fixed top-0 w-full py-3 bg-white z-40'>
+      {/* <div className='fixed top-0 w-full py-3 bg-white z-40'>
         <div className='max-w-lg w-full m-auto flex flex-col items-center'>
           <Searchbar />
         </div>
@@ -20,7 +21,10 @@ function App() {
 
       <div className='mt-20'>
         <Products />
-      </div>
+      </div> */}
+
+
+      <Users/>
 
     </div>
   )
