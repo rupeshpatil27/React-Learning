@@ -1,29 +1,23 @@
-import {useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 
 const Users = () => {
-  const postQuery = useQuery({
-    queryKey: ["post"],
-    queryFn: async () => {
-      const data = await fetch(`https://dummyjson.com/post/1`).then(
-        (res) => res.json()
-      );
-    },
-  });
-  const commentQuery = useQuery({
-    queryKey: ["comment"],
-    queryFn: async () => {
-      const data = await fetch(`https://dummyjson.com/post/1/comments`).then(
-        (res) => res.json()
-      );
-    },
+  const userIds = ["1", "2"];
+
+  const userQueries = useQueries({
+    queries: userIds.map((id) => {
+      return {
+        queryKey: ["user", id],
+        queryFn: () => async () => {
+          const data = await fetch(`https://dummyjson.com/users/${id}`).then(
+            (res) => res.json()
+          );
+        },
+      };
+    }),
   });
 
-  return (
-    <div>
-      {JSON.stringify(postQuery)}
-      {JSON.stringify(commentQuery)}
-    </div>
-  );
+  return <div>{JSON.stringify(userQueries)}</div>;
 };
 
 export default Users;
+
