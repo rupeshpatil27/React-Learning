@@ -236,3 +236,72 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
+
+.stock-ticker {
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f4f4f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  color: #333;
+}
+
+.stock-ticker h1 {
+  color: #1e90ff;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.stock-ticker ul {
+  list-style: none;
+  padding: 0;
+}
+
+.stock-ticker ul li {
+  font-size: 1.2rem;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.stock-ticker ul li:last-child {
+  border-bottom: none;
+}
+
+.stock-ticker ul li:hover {
+  background-color: #e0f7ff;
+}
+
+.stock-ticker strong {
+  font-weight: bold;
+  color: #333;
+}
+
+.stock-ticker p {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #888;
+  font-style: italic;
+}
+
+/* Loading and error states */
+.stock-ticker .loading, .error {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.stock-ticker .loading {
+  color: #ff9800;
+}
+
+.stock-ticker .error {
+  color: #f44336;
+}
