@@ -1,5 +1,8 @@
-export const fetchTodos = async () => {
-  const response = await fetch("https://dummyjson.com/todos?&skip=0&limit=0");
+export const fetchTodos = async ({ pageParam = 0 }) => {
+
+  const response = await fetch(
+    `https://dummyjson.com/todos?&skip=${pageParam}&limit=10`
+  );
   const data = await response.json();
   return data;
 };

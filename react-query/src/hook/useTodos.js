@@ -1,19 +1,35 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createTodo, deleteTodo, fetchTodo, fetchTodos, updateTodo } from "../api/todo";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import {
+  createTodo,
+  deleteTodo,
+  fetchTodo,
+  fetchTodos,
+  updateTodo,
+} from "../api/todo";
 
 export function useTodos() {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ["todos"],
     queryFn: fetchTodos,
     refetchOnWindowFocus: false,
+    getNextPageParam: (lastPage) => {
+      const { skip, limit, total } = lastPage;
+      const nextSkip = skip + limit;
+      return nextSkip >= total ? undefined : nextSkip;
+    },
   });
 }
 
 export function useTodo(id) {
   return useQuery({
-    queryKey: ['todo', id],
+    queryKey: ["todo", id],
     queryFn: () => fetchTodo(id),
-    enabled: !!id,  // dependent query: only run if id exists
+    enabled: !!id, // dependent query: only run if id exists
   });
 }
 
@@ -30,14 +46,25 @@ export function useCreateTodo() {
 
       // Optimistically update the cache
       queryClient.setQueryData(["todos"], (old) => {
-        return {
-          ...old,
-          todos: [
-            ...old.todos,
-            { ...newTodo, id: old.total + 1, completed: false },
-          ],
-          total: old.total + 1,
-        };
+        const firstPage = old?.pages[0];
+
+        if (firstPage) {
+          return {
+            ...old,
+            pageParams: old.pageParams,
+            pages: [
+              {
+                ...firstPage,
+                todos: [
+                  { ...newTodo, id: old.total + 1, completed: false },
+                  ...firstPage.todos,
+                ],
+                total: firstPage.total + 1,
+              },
+              ...old.pages.slice(1),
+            ],
+          };
+        }
       });
 
       // Return context with rollback data
@@ -59,19 +86,21 @@ export function useUpdateTodo() {
   return useMutation({
     mutationFn: updateTodo,
     onMutate: async ({ id, updates }) => {
-
-        console.log(updates)
       await qc.cancelQueries({ queryKey: ["todos"] });
 
       const previous = qc.getQueryData(["todos"]);
 
       qc.setQueryData(["todos"], (old) => {
-        if (!old || !Array.isArray(old.todos)) return old;
+        if (!old) return old;
+
         return {
           ...old,
-          todos: old.todos.map((todo) =>
-            todo.id === id ? { ...todo, ...updates } : todo
-          ),
+          pages: old.pages.map((page) => ({
+            ...page,
+            todos: page.todos.map((todo) =>
+              todo.id === id ? { ...todo, ...updates } : todo
+            ),
+          })),
         };
       });
 
@@ -93,17 +122,19 @@ export function useDeleteTodo() {
     mutationFn: deleteTodo,
 
     onMutate: async (id) => {
-      await qc.cancelQueries({ queryKey: ['todos'] });
+      await qc.cancelQueries({ queryKey: ["todos"] });
 
-      const previous = qc.getQueryData(['todos']);
+      const previous = qc.getQueryData(["todos"]);
 
-      qc.setQueryData(['todos'], (old) => {
-        if (!old || !Array.isArray(old.todos)) return old;
-
+      qc.setQueryData(["todos"], (old) => {
+        if (!old) return old;
         return {
           ...old,
-          todos: old.todos.filter((todo) => todo.id !== id),
-          total: old.total - 1,
+          pages: old.pages.map((page, index) => ({
+            ...page,
+            todos: page.todos.filter((todo) => todo.id !== id),
+            total: index === 0 ? page.total - 1 : page.total,
+          })),
         };
       });
 
@@ -112,13 +143,13 @@ export function useDeleteTodo() {
 
     onError: (err, id, context) => {
       if (context?.previous) {
-        qc.setQueryData(['todos'], context.previous);
+        qc.setQueryData(["todos"], context.previous);
       }
     },
 
     // always sync with server
     onSettled: () => {
-      qc.invalidateQueries({ queryKey: ['todos'] });
+      qc.invalidateQueries({ queryKey: ["todos"] });
     },
   });
 }

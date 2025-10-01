@@ -1,6 +1,13 @@
 import React, { useMemo, useState } from "react";
+
+import { useInView } from "react-intersection-observer";
 import { message } from "antd";
-import { useCreateTodo, useDeleteTodo, useTodos, useUpdateTodo } from "../hook/useTodos";
+import {
+  useCreateTodo,
+  useDeleteTodo,
+  useTodos,
+  useUpdateTodo,
+} from "../hook/useTodos";
 import TodoModal from "./TodoModal";
 
 function TodoFilter({ filter, setFilter }) {
@@ -46,26 +53,43 @@ function Todo({ todo, setModalTodo }) {
   return (
     <li className={`todo-item ${todo.completed ? "completed" : ""}`}>
       <input type="checkbox" onChange={() => handleToggle(todo.id)} />
-      <span onClick={() => setModalTodo(todo)} >{todo.todo}</span>
+      <span onClick={() => setModalTodo(todo)}>{todo.todo}</span>
       <button onClick={() => handleDelete(todo.id)}>✕</button>
     </li>
   );
 }
 
-function TodoList({ todos, toggleTodo, deleteTodo, setModalTodo }) {
+function TodoList({
+  todos,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  setModalTodo,
+}) {
+  const { ref } = useInView({
+    threshold: 1,
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+  });
+
   return (
     <ul className="todo-list">
-      {[...todos]
-        .sort((a, b) => b.id - a.id)
-        .map((todo) => (
-          <Todo
-            key={todo.id}
-            todo={todo}
-            toggleTodo={toggleTodo}
-            deleteTodo={deleteTodo}
-            setModalTodo={setModalTodo}
-          />
-        ))}
+      {todos.map((todo) => (
+        <Todo
+          key={todo.id}
+          todo={todo}
+          setModalTodo={setModalTodo}
+        />
+      ))}
+
+      {hasNextPage && (
+        <div ref={ref} className="loading">
+          {isFetchingNextPage ? "Loading more todos..." : "Scroll to load more"}
+        </div>
+      )}
     </ul>
   );
 }
@@ -76,13 +100,16 @@ function TodoApp() {
   const [modalTodo, setModalTodo] = useState(null);
 
   const {
-    data: todos,
+    data,
     isLoading,
     isError,
     error,
-    refetch,
     isFetching,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
   } = useTodos();
+
   const createTodoMutation = useCreateTodo();
 
   const handleAdd = (e) => {
@@ -102,8 +129,10 @@ function TodoApp() {
     );
   };
 
+  const todos = data?.pages.flatMap((page) => page.todos) || [];
+
   const filtered = useMemo(() => {
-    return (todos?.todos || []).filter((t) => {
+    return (todos || []).filter((t) => {
       if (filter === "active") return !t.completed;
       if (filter === "completed") return t.completed;
       return true;
@@ -132,6 +161,9 @@ function TodoApp() {
 
       <TodoList
         todos={filtered}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
         setModalTodo={setModalTodo}
       />
 
