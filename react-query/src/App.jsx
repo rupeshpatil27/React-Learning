@@ -1,10 +1,11 @@
 import "./App.css";
-import StockTicker from "./component/StockTicker";
 // import User from './component/user'
 // import Products from './component/Products'
 // import Searchbar from './component/Searchbar'
 // import UserPostsPageManual from "./component/UserPostsPageManual";
-import UserPostsPageDynamic from "./component/UserPostsPageDynamic";
+// import UserPostsPageDynamic from "./component/UserPostsPageDynamic";
+// import StockTicker from "./component/StockTicker";
+import TodoApp from "./component/TodoApp";
 
 function App() {
   return (
@@ -35,7 +36,10 @@ function App() {
 
 
       {/* Advanced React Query - Polling */}
-      <StockTicker/>
+      {/* <StockTicker/> */}
+
+
+      <TodoApp/>
       
     </div>
   );
