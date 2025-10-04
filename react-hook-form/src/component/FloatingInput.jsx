@@ -23,9 +23,11 @@ export default function FloatingInput({
           name={name}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          placeholder={isFocused ? placeholder : ""}
+          placeholder={isFocused || (error && !rest.value) ? placeholder : ""}
           className="floating-input"
           autoComplete="off"
+          aria-invalid={!!error}
+          aria-describedby={error ? `${name}-error` : undefined}
           required
           {...rest}
         />
