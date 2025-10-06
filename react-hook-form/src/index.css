@@ -43,96 +43,9 @@ h1 {
   flex-direction: column;
 }
 
-.input-control {
+.floating-wrapper {
   width: 100%;
   margin: 8px 0;
-}
-
-.floating-container {
-  width: 100%;
-  position: relative;
-}
-
-.floating-container {
-  width: 100%;
-  position: relative;
-}
-
-.floating-container .floating-input {
-  width: 100%;
-  font-size: 14px;
-  height: 40px;
-  line-height: 40px;
-  color: #000;
-  padding: 10px 10px 10px 15px;
-  border: 1px solid rgba(132, 139, 200, 0.18);
-  border-radius: 8px;
-  background-color: #fff;
-  outline: none;
-  transition: 0.2s ease;
-}
-
-.floating-container .floating-input:focus,
-.floating-container .floating-input:valid {
-  border-color: #3694ff;
-}
-
-.floating-container .floating-label {
-  color: #afafaf;
-  font-size: 14px;
-  position: absolute;
-  pointer-events: none;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: all 0.2s ease;
-  background-color: #fff;
-  transform-origin: left center;
-  padding: 0 4px;
-}
-
-.floating-container .floating-input:focus ~ .floating-label,
-.floating-container .floating-input:valid ~ .floating-label {
-  top: 0;
-  transform: translate(0, -50%) scale(0.77);
-  color: #3694ff;
-  z-index: 1;
-}
-
-.floating-container.error .floating-input {
-  border-color: #ff3636;
-}
-
-.floating-container.error .floating-label {
-  top: 0;
-  transform: translateY(-50%) scale(0.77);
-  color: #ff3636;
-  z-index: 1;
-}
-
-.floating-container.error .floating-input:focus,
-.floating-container.error .floating-input:valid {
-  border-color: #ff3636;
-}
-
-.floating-container.error .floating-input:focus ~ .floating-label,
-.floating-container.error .floating-input:valid ~ .floating-label {
-  color: #ff3636;
-}
-
-.input-control .error-msg {
-  width: 100%;
-  display: block;
-  font-size: 13px;
-  margin-top: 5px;
-  margin-left: 5px;
-  color: #ff3636;
-  text-align: left;
-  visibility: hidden;
-}
-
-.floating-container.error + .error-msg {
-  visibility: visible;
 }
 
 /* Button Styles */
@@ -155,4 +68,149 @@ h1 {
 
 .submit-button:hover {
   background-color: #ea580c;
+}
+
+
+/* floating label style */
+
+.floating-container {
+  width: 100%;
+  position: relative;
+}
+
+.floating-container .floating-field {
+  width: 100%;
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+  color: #000;
+  padding: 10px 10px 10px 15px;
+  border: 1px solid rgba(132, 139, 200, 0.18);
+  border-radius: 8px;
+  background-color: #fff;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.floating-container.focused .floating-field {
+  border-color: #3694ff;
+}
+
+.floating-container .floating-label {
+  color: #afafaf;
+  font-size: 14px;
+  position: absolute;
+  pointer-events: none;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+  background-color: #fff;
+  transform-origin: left center;
+  padding: 0 4px;
+}
+
+.floating-container.focused.has-value .floating-label,
+.floating-container.focused .floating-label{
+  top: 0;
+  transform: translateY(-50%) scale(0.77);
+  z-index: 1;
+  color: #3694ff;
+}
+
+.floating-container.has-value .floating-label{
+  top: 0;
+  transform: translateY(-50%) scale(0.77);
+  z-index: 1;
+}
+
+.floating-container.focused.has-value.error .floating-label,
+.floating-container.focused.error + .floating-label {
+  top: 0;
+  transform: translateY(-50%) scale(0.77);
+  color: #ff3636;
+  z-index: 1;
+}
+
+.floating-container.error.has-value .floating-label {
+  top: 0;
+  transform: translateY(-50%) scale(0.77);
+  color: #ff3636;
+  z-index: 1;
+}
+
+.floating-container.error .floating-label {
+  top: 0;
+  transform: translateY(-50%) scale(0.77);
+  color: #ff3636;
+  z-index: 1;
+}
+
+.floating-container.error .floating-field {
+  border-color: #ff3636;
+}
+
+.error-msg {
+  width: 100%;
+  display: block;
+  font-size: 13px;
+  margin-top: 5px;
+  margin-left: 5px;
+  color: #ff3636;
+  text-align: left;
+  visibility: hidden;
+}
+
+.floating-container.error + .error-msg {
+  visibility: visible;
+} 
+
+.floating-dropdown-menu {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  margin-top: 2px;
+  transform: translateX(0);
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 2px 3px 5px -1px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  z-index: 10;
+  opacity: 0;
+  transform-origin: top;
+  transform: scale(0.99) translateY(-0.7rem);
+  transition: all 0.2s ease;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.floating-dropdown-menu.open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.floating-dropdown-menu .floating-dropdown-options {
+  list-style: none;
+  padding: 4px;
+  margin: 0;
+}
+
+.floating-dropdown-menu .floating-dropdown-item {
+  color: #000;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.floating-dropdown-menu .floating-dropdown-item:hover {
+  background-color: #f6f6f6;
+}
+
+.floating-dropdown-menu .floating-dropdown-item.selected {
+  background-color: #bfdbfe;
+  font-weight: 600;
 }

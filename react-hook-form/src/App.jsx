@@ -1,6 +1,7 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import "./App.css";
 import FloatingInput from "./component/FloatingInput";
+import FloatingSelect from "./component/FloatingSelect";
 
 const isEmailAvailable = async (email) => {
   const takenEmails = ["admin@example.com", "test@example.com"];
@@ -9,12 +10,13 @@ const isEmailAvailable = async (email) => {
 };
 
 function App() {
+
   const {
-    register,
+    control,
     formState: { errors },
     handleSubmit,
   } = useForm({
-    mode: "onTouched",
+    mode: "onSubmit",
   });
 
   const onSubmit = (data) => {
@@ -29,11 +31,10 @@ function App() {
         className="form-control"
         noValidate
       >
-        <FloatingInput
-          label="Name"
-          name="userName"
-          placeholder="Your name"
-          {...register("userName", {
+        <Controller
+          name="name"
+          control={control}
+          rules={{
             required: "Name is required",
             minLength: {
               value: 3,
@@ -44,16 +45,22 @@ function App() {
               value: /^[A-Za-z\s]+$/,
               message: "Only letters and spaces",
             },
-          })}
-          error={errors.userName?.message}
+          }}
+          render={({ field }) => (
+            <FloatingInput
+              {...field}
+              label="Name"
+              type="text"
+              error={errors.name?.message}
+              required
+            />
+          )}
         />
 
-        <FloatingInput
-          label="Email"
+        <Controller
           name="email"
-          type="email"
-          placeholder="example@xyz.com"
-          {...register("email", {
+          control={control}
+          rules={{
             required: {
               value: true,
               message: "Email is required",
@@ -66,36 +73,95 @@ function App() {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
               message: "Invalid email address",
             },
-          })}
-          error={errors.email?.message}
+          }}
+          render={({ field }) => (
+            <FloatingInput
+              {...field}
+              label="Email id"
+              type="text"
+              error={errors.email?.message}
+              required
+            />
+          )}
         />
 
-        <FloatingInput
-          label="Password"
+        <Controller
+          name="country"
+          control={control}
+          rules={{ required: "Country is required" }}
+          render={({ field, fieldState }) => (
+            <FloatingSelect
+              {...field}
+              label="Choose Country"
+              value={field.value}
+              onChange={field.onChange}
+              options={[
+                { label: "India", value: "IN" },
+                { label: "USA", value: "US" },
+                { label: "UK", value: "UK" },
+              ]}
+              error={fieldState?.error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="gender"
+          control={control}
+          rules={{ required: "required" }}
+          render={({ field, fieldState }) => (
+            <FloatingSelect
+              {...field}
+              label="Choose an option"
+              value={field.value}
+              onChange={field.onChange}
+              options={[
+                { label: "Male", value: "Male" },
+                { label: "Female", value: "Female" },
+              ]}
+              error={fieldState?.error?.message}
+            />
+          )}
+        />
+
+        <Controller
           name="password"
-          type="password"
-          placeholder="Your password"
-          {...register("password", {
+          control={control}
+          rules={{
             required: "Password is required",
             minLength: {
               value: 6,
               message: "Password must be at least 6 characters",
             },
-          })}
-          error={errors.password?.message}
+          }}
+          render={({ field }) => (
+            <FloatingInput
+              {...field}
+              label="Password"
+              type="password"
+              error={errors.password?.message}
+              required
+            />
+          )}
         />
 
-        <FloatingInput
-          label="Confirm Password"
+        <Controller
           name="confirmPassword"
-          type="password"
-          placeholder="Confirm password"
-          {...register("confirmPassword", {
+          control={control}
+          rules={{
             required: "Please confirm your password",
             validate: (value, formValues) =>
               value === formValues.password || "Passwords do not match",
-          })}
-          error={errors.confirmPassword?.message}
+          }}
+          render={({ field }) => (
+            <FloatingInput
+              {...field}
+              label="Confirm Password"
+              type="password"
+              error={errors.confirmPassword?.message}
+              required
+            />
+          )}
         />
 
         <button type="submit" className="submit-button">
