@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import "./App.css";
 import FloatingInput from "./component/FloatingInput";
 import FloatingSelect from "./component/FloatingSelect";
@@ -17,6 +17,14 @@ function App() {
     handleSubmit,
   } = useForm({
     mode: "onSubmit",
+    defaultValues: {
+      phones: [{ phoneNumber: "" }], // Default for phone number array
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "phones", // Name of the field array
   });
 
   const onSubmit = (data) => {
@@ -163,6 +171,48 @@ function App() {
             />
           )}
         />
+
+        <div>
+          <label>Phone Numbers</label>
+          {fields.map((item, index) => (
+            <div key={item.id} style={{ marginBottom: "10px" }}>
+              <Controller
+                name={`phones[${index}].phoneNumber`}
+                control={control}
+                rules={{
+                  required: "Phone number is required",
+                  pattern: {
+                    value: /^[0-9]{10}$/,
+                    message: "Phone number must be 10 digits",
+                  },
+                }}
+                render={({ field }) => (
+                  <FloatingInput
+                    {...field}
+                    label={`Phone ${index + 1}`}
+                    type="text"
+                    error={errors.phones?.[index]?.phoneNumber?.message}
+                    required
+                  />
+                )}
+              />
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                style={{ marginLeft: "10px" }}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => append({ phoneNumber: "" })}
+            style={{ marginTop: "10px" }}
+          >
+            Add Phone Number
+          </button>
+        </div>
 
         <button type="submit" className="submit-button">
           Submit
