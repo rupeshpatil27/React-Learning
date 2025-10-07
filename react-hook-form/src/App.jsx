@@ -3,28 +3,25 @@ import "./App.css";
 import FloatingInput from "./component/FloatingInput";
 import FloatingSelect from "./component/FloatingSelect";
 
-const isEmailAvailable = async (email) => {
-  const takenEmails = ["admin@example.com", "test@example.com"];
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return !takenEmails.includes(email);
-};
+import { validationSchema } from "./utils/validationSchema";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function App() {
-
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm({
     mode: "onSubmit",
+    resolver: yupResolver(validationSchema),
     defaultValues: {
-      phones: [{ phoneNumber: "" }], // Default for phone number array
+      phones: [{ phoneNumber: "" }],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "phones", // Name of the field array
+    name: "phones",
   });
 
   const onSubmit = (data) => {
@@ -42,18 +39,6 @@ function App() {
         <Controller
           name="name"
           control={control}
-          rules={{
-            required: "Name is required",
-            minLength: {
-              value: 3,
-              message: "Name must be at least 3 characters",
-            },
-            maxLength: { value: 30, message: "Max 30 chars" },
-            pattern: {
-              value: /^[A-Za-z\s]+$/,
-              message: "Only letters and spaces",
-            },
-          }}
           render={({ field }) => (
             <FloatingInput
               {...field}
@@ -68,20 +53,6 @@ function App() {
         <Controller
           name="email"
           control={control}
-          rules={{
-            required: {
-              value: true,
-              message: "Email is required",
-            },
-            validate: {
-              isAvailable: async (value) =>
-                (await isEmailAvailable(value)) || "Email is already taken",
-            },
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: "Invalid email address",
-            },
-          }}
           render={({ field }) => (
             <FloatingInput
               {...field}
@@ -96,11 +67,10 @@ function App() {
         <Controller
           name="country"
           control={control}
-          rules={{ required: "Country is required" }}
           render={({ field, fieldState }) => (
             <FloatingSelect
               {...field}
-              label="Choose Country"
+              label="Country"
               value={field.value}
               onChange={field.onChange}
               options={[
@@ -116,18 +86,16 @@ function App() {
         <Controller
           name="gender"
           control={control}
-          rules={{ required: "required" }}
           render={({ field, fieldState }) => (
             <FloatingSelect
               {...field}
-              label="Choose an option"
+              label="Gender"
               value={field.value}
               onChange={field.onChange}
               options={[
                 { label: "Male", value: "Male" },
                 { label: "Female", value: "Female" },
               ]}
-              error={fieldState?.error?.message}
             />
           )}
         />
@@ -135,13 +103,6 @@ function App() {
         <Controller
           name="password"
           control={control}
-          rules={{
-            required: "Password is required",
-            minLength: {
-              value: 6,
-              message: "Password must be at least 6 characters",
-            },
-          }}
           render={({ field }) => (
             <FloatingInput
               {...field}
@@ -156,11 +117,6 @@ function App() {
         <Controller
           name="confirmPassword"
           control={control}
-          rules={{
-            required: "Please confirm your password",
-            validate: (value, formValues) =>
-              value === formValues.password || "Passwords do not match",
-          }}
           render={({ field }) => (
             <FloatingInput
               {...field}
@@ -174,19 +130,14 @@ function App() {
 
         <div>
           <label>Phone Numbers</label>
+          <span style={{color:"red"}}>{errors.phones?.message}</span>
           {fields.map((item, index) => (
             <div key={item.id} style={{ marginBottom: "10px" }}>
               <Controller
                 name={`phones[${index}].phoneNumber`}
                 control={control}
-                rules={{
-                  required: "Phone number is required",
-                  pattern: {
-                    value: /^[0-9]{10}$/,
-                    message: "Phone number must be 10 digits",
-                  },
-                }}
                 render={({ field }) => (
+
                   <FloatingInput
                     {...field}
                     label={`Phone ${index + 1}`}

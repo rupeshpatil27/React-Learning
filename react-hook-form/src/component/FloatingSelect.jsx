@@ -1,18 +1,23 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-const FloatingSelect = ({ label, options = [], value, onChange, error = "",name }) => {
+const FloatingSelect = ({
+  label,
+  options = [],
+  value,
+  onChange,
+  error = "",
+  name,
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Memoize selected label from value
   useEffect(() => {
     const selectedOption = options.find((opt) => opt.value === value);
     setInputValue(selectedOption?.label || "");
   }, [value, options]);
 
-  // Handle outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

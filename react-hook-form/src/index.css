@@ -69,7 +69,6 @@ h1 {
   background-color: #ea580c;
 }
 
-
 /* floating label style */
 
 .floating-container {
@@ -110,14 +109,14 @@ h1 {
 }
 
 .floating-container.focused.has-value .floating-label,
-.floating-container.focused .floating-label{
+.floating-container.focused .floating-label {
   top: 0;
   transform: translateY(-50%) scale(0.77);
   z-index: 1;
   color: #3694ff;
 }
 
-.floating-container.has-value .floating-label{
+.floating-container.has-value .floating-label {
   top: 0;
   transform: translateY(-50%) scale(0.77);
   z-index: 1;
@@ -162,7 +161,7 @@ h1 {
 
 .floating-container.error + .error-msg {
   visibility: visible;
-} 
+}
 
 .floating-dropdown-menu {
   position: absolute;
