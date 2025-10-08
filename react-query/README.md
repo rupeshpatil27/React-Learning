@@ -1,12 +1,55 @@
-# React + Vite
+# ⚛️ React Query
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains code examples, implementations, and experiments showcasing both basic and advanced features of **React Query**. The goal of this repository is to deepen understanding of React Query and master its real-world usage in data fetching, caching, and UI synchronization.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✅ Concepts Covered
 
-## Expanding the ESLint configuration
+### 📦 Basics
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- ✅ Setup and configuration of React Query
+- ✅ useQuery for fetching data
+- ✅ Exploring useQuery properties (data, error, status, isFetching, etc.)
+- ✅ React Query DevTools integration
+- ✅ Using `staleTime`, `cacheTime`, and `refetchOnWindowFocus`
+- ✅ Manual query execution using `enabled: false`
+
+---
+
+### 🔁 Query Patterns
+
+- ✅ Dynamic parallel queries using `useQueries`
+- ✅ Manual parallel queries
+- ✅ Dependent queries (chained queries based on results)
+- ✅ Polling with `refetchInterval`
+- ✅ Query disabling and pausing
+
+---
+
+### 🔄 Mutations
+
+- ✅ Creating, updating, and deleting data using `useMutation`
+- ✅ Query invalidation after mutations
+- ✅ Optimistic updates for instant UI feedback
+- ✅ Error handling and rollback with mutation lifecycle methods
+
+---
+
+### 📑 Advanced Data Fetching Patterns
+
+- ✅ Pagination using `useQuery`
+- ✅ Filters with query keys or query parameters
+- ✅ Infinite scrolling using `useInfiniteQuery`
+- ✅ Background refetching indicators
+- ✅ Handling loading states with placeholder and suspense
+
+---
+
+## 🛠 Tech Stack
+
+- React
+- React Query (TanStack Query)
+- Axios or Fetch API
+- React Query DevTools
+- Dummy APIs
