@@ -6,7 +6,7 @@ const checkEmailAvailability = async (email) => {
   return !takenEmails.includes(email);
 };
 
-export const validationSchema = Yup.object({
+export const generalInfoSchema = Yup.object({
   name: Yup.string()
     .required("Name is required")
     .min(3, "Name must be at least 3 characters")
@@ -31,15 +31,17 @@ export const validationSchema = Yup.object({
     .required("Please confirm your password")
     .oneOf([Yup.ref("password"), null], "Passwords must match"),
 
+});
 
+
+export const contactSchema = Yup.object().shape({
   phones: Yup.array()
     .of(
-      Yup.object({
+      Yup.object().shape({
         phoneNumber: Yup.string()
           .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
           .required("Phone number is required"),
       })
     )
-    .min(1, "At least one phone number is required")
-    .required("Phone numbers are required"),
+    .min(1, "At least one phone number is required"),
 });
